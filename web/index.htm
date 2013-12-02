@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Light color selector
+	</title>
+	
+	<script type="text/javascript" src="farbtastic/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="farbtastic/farbtastic.js"></script>
+	<link rel="stylesheet" href="farbtastic/farbtastic.css" type="text/css" />
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			/*$('#demo').hide();
+			$('#picker').farbtastic('#color');*/
+			$('#picker').farbtastic(function(color) {
+				$('#color').val(color); /* need to make text box change color too, or have some larger preview box, and then load the item with an initial*/
+				var jqxhr = $.ajax( "setColor.php?new="+ encodeURIComponent(color) );
+				  /*.done(function() {
+					alert( "success" );
+				  })
+				  .fail(function() {
+					alert( "error" );
+				  })
+				  .always(function() {
+					alert( "complete" );
+				});*/
+				
+			});
+		});
+		
+		/*$('$color').value = color;
+		
+		$('#color').change(alert("hi!"););*/
+	</script>
+	
+	
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	
+</head>
+
+<body>
+	<h1>Light Color Picker</h1>
+
+	<form action="" style="width: 400px;">
+		<div class="form-item"><label for="color">Color:</label><input type="text" id="color" name="color" value="#123456" /></div><div id="picker"></div>
+	</form>
+
+</body>
+</html>

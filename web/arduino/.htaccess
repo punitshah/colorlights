@@ -1,0 +1,12 @@
+
+
+# redirect www.punit.org to punit.org
+Options +FollowSymLinks
+RewriteEngine off
+#RewriteCond %{HTTP_HOST} .
+#RewriteCond &{HTTP_HOST} !^punit\.org/colorlights/arduino
+#RewriteCond %{HTTP_HOST} !^punit\.org
+#RewriteRule ([^(/colorlights/ardunio.*)]*) http://punit.org/$1 [R=301,L]
+#RewriteRule (.*) http://punit.org/$1 [R=301,L]
+
+
