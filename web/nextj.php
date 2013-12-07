@@ -1,14 +1,12 @@
-<?php
+<?
+// Colorlights project
+// Get next J train time, convert to color, and then call saver
 
 error_reporting(E_ALL);
 
 $debug = 1;
 
 $xml = file_get_contents("http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=sf-muni&stopId=17073&routeTag=J");
-//$xml = file_get_contents("http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=sf-muni&stopId=14269&routeTag=38AX");
-//$xml = file_get_contents("./nextjdummydata.xml");
-
-
 
 if ($xml == FALSE){
 	if ($debug)
