@@ -4,11 +4,16 @@
 	<title>
 		Colorlight selector
 	</title>
+		
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 	
-	<script type="text/javascript" src="lib/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script>
 	<link rel="stylesheet" href="lib/farbtastic/farbtastic.css" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="lib/style.css" />
+	
+	<link href='http://fonts.googleapis.com/css?family=Signika+Negative' rel='stylesheet' type='text/css'>
 	
 	<script type="text/javascript" charset="utf-8">
 		// instantiate the color picker
@@ -20,14 +25,32 @@
 			});
 		});
 	</script>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=0">
 </head>
 
 <body>
+<div id="content">
 	<h1>Colorlight selector</h1>
-
-	<form action="" style="width: 400px;">
-		<div class="form-item"><label for="color">Color:</label><input type="text" id="color" name="color" value="#123456" /></div><div id="picker"></div>
+	
+	<form id="pickermodule" action="">
+		<div class="form-item">
+			<input type="text" id="color" name="color" value="#123456" />
+		</div>
+		<div id="picker"></div>
 	</form>
+</div>
 
+
+
+<footer data-position="fixed">
+	<div data-role="navbar">
+    	<ul>
+			<li><a onClick="setMode.php?new=picker" href="#" >Picker</a></li>
+			<li><a href="#" >J Train</a></li>
+			<li><a href="#" >Settings</a></li>
+		</ul>
+	</div><!-- /navbar -->
+<footer><!-- /footer -->
 </body>
 </html>
