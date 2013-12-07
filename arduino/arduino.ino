@@ -1,23 +1,27 @@
 // Colorlights project
 // Adruino code to drive a breathing light based on web input
 
+// Need to add WiFly library in this directory to Arduino desktop IDE before uploading code to device
 #include "WiFly.h"
 
 #include "credentials.h"
+#include "webserver.h"
 
+// 1 for debug mode on, 0 for off
 #define DEBUG 0
 
 #define PIN_RED 3
 #define PIN_GREEN 5
 #define PIN_BLUE 6
 
-#define BREATH_LEN 16000
+#define BREATH_LEN 16000 //adjust based on the length of a human bredth; depending on how computationally intensive you make each cycle and the power of your arduino, this number may need to be adjusted
 #define BREATH_DEPTH_MIN .1
+
 int red, green, blue;
 int oldred, oldgreen, oldblue;
 int cycle = 1;
 
-Client client("www.hcs.harvard.edu", 80);
+Client client(webclient, 80);
 
 void setup() {
   // setup pin outputs
@@ -39,7 +43,7 @@ void setup() {
   
   Serial.println("connecting...");
 
-  // get an initial set of colors and save
+  // set initial colors to black so we fade the light on
   updateColor();
   oldred   = 0;
   oldgreen = 0;
@@ -85,8 +89,14 @@ void updateColor() {
   if (client.connect()) {
     if(DEBUG)
       Serial.println("connected");
-    client.println("GET /~punit/punit.org/colorlights/arduino/getColor.php HTTP/1.0");
+    
+    // construct and send request for current color
+    String request = "GET ";
+    request = request + getcolorURL;
+    request = request + " HTTP/1.0";
+    client.println(request);
     client.println();
+    
   } else {
     if(DEBUG)
       Serial.println("connection failed");
@@ -160,10 +170,8 @@ void updateColor() {
   green = hexToInt(ghex);
   blue  = hexToInt(bhex);
   
-  
   // output values
   setLights();
-  
 
   if(DEBUG)
     Serial.println("\n\n\n");

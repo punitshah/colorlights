@@ -4,8 +4,7 @@
 #ifndef __CREDENTIALS_H__
 #define __CREDENTIALS_H__
 
-// Wifi parameters
-char passphrase[] = "<Add Passphrase>";
-char ssid[] = "<Add SSID>";
+  char passphrase[] = "<Add Passphrase>";
+  char ssid[] = "<Add SSID>";
 
 #endif
