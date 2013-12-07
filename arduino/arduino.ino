@@ -1,11 +1,9 @@
-
-// (Based on Ethernet's WebClient Example)
+// Colorlights project
+// Adruino code to drive a breathing light based on web input
 
 #include "WiFly.h"
 
-
 #include "credentials.h"
-//#include <string.h>
 
 #define DEBUG 0
 
@@ -17,12 +15,7 @@
 #define BREATH_DEPTH_MIN .1
 int red, green, blue;
 int oldred, oldgreen, oldblue;
-//int cred, cgreen, cblue; // current values for red, green, and blue
 int cycle = 1;
-
-//byte server[] = { 66, 249, 89, 104 }; // Google
-
-//Client client(server, 80);
 
 Client client("www.hcs.harvard.edu", 80);
 
@@ -48,9 +41,9 @@ void setup() {
 
   // get an initial set of colors and save
   updateColor();
-  oldred   = red;
-  oldgreen = green;
-  oldblue  = blue;
+  oldred   = 0;
+  oldgreen = 0;
+  oldblue  = 0;
   
 }
 
@@ -69,11 +62,8 @@ void loop(){
   
   }
     
-  // increment and prevent var overflow
+  // increment
   cycle++;
-  //if (cycle > BREATH_LEN)
-  //  cycle -= BREATH_LEN;
-  //delay(10000);
 }
 
 
@@ -141,13 +131,6 @@ void updateColor() {
       break;
   hexStart++;
   
-  // check if we never found a '#'
-  /*if (hexStart >= strlen(rawHttp)) {
-    rhex = "00";
-    ghex = "00";
-    bhex = "00";
-  }*/
-  
   // save hex chars
   rhex[0] = rawHttp[hexStart + 0];
   rhex[1] = rawHttp[hexStart + 1];
@@ -196,14 +179,6 @@ void setLights() {
   if(DEBUG)
     Serial.println(intensity);
   
-  //double avgred   = (red   * cycle + oldred   * ((BREATH_LEN - cycle)) )/(BREATH_LEN);
-  //double avggreen = (green * cycle + oldgreen * ((BREATH_LEN - cycle)) )/(BREATH_LEN);
-  //double avgblue  = (blue  * cycle + oldblue  * ((BREATH_LEN - cycle)) )/(BREATH_LEN);
-  
-  //int avgred   = (red   * cycle/100 + oldred   * ((BREATH_LEN - cycle)/100) )/(BREATH_LEN/100);
-  //int avggreen = (green * cycle/100 + oldgreen * ((BREATH_LEN - cycle)/100) )/(BREATH_LEN/100);
-  //int avgblue  = (blue  * cycle/100 + oldblue  * ((BREATH_LEN - cycle)/100) )/(BREATH_LEN/100);
-  
   double cyclePercent = ((double)(cycle))/((double)(BREATH_LEN));
   
   double avgred   = (red   * cyclePercent + oldred   * (1-cyclePercent) );
@@ -230,7 +205,7 @@ double getIntensity() {
 
 // converts two digit hex into integer
 int hexToInt (char* hex) {
-  return 16 * hexdigitToInt(hex[0]) + hexdigitToInt(hex[1]); // need to error check the outputs from digit function
+  return 16 * hexdigitToInt(hex[0]) + hexdigitToInt(hex[1]); // TODO: error check the outputs from digit function
 }
 
 int hexdigitToInt (char hexdigit) {
