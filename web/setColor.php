@@ -21,7 +21,7 @@ function saveColor($newColor) {
 	}
 
 	// save input
-	$handle = fopen("../datastore/color.txt", "w");
+	$handle = fopen("datastore/color.txt", "w");
 	fwrite ($handle, $newColor);
 	fclose($handle);
 

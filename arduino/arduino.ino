@@ -4,7 +4,7 @@
 #include "WiFly.h"
 
 
-#include ".gitignore/credentials.h"
+#include "credentials.h"
 //#include <string.h>
 
 #define DEBUG 0
