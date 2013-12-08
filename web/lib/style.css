@@ -44,12 +44,3 @@ div#trainColor{
 	margin:auto;
 }
 
-footer {
-	z-index: 0;
-}
-
-.nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }
-.nav-glyphish-example .ui-btn .ui-icon { width: 32px!important; height: 32px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
-
-#subway .ui-icon { background:  url(./icons/icon-metro-subway 32.png) 50% 50% no-repeat; background-size: 32px 32px; }
-#pallet .ui-icon { background:  url(../../_assets/img/glyphish-icons/18-envelope.png) 50% 50% no-repeat; background-size: 24px 16px;  }
