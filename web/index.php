@@ -3,7 +3,6 @@
 // Main view
 
 require_once("controller.php");
-//require_onve("view-mobile.php");
 
 $modeOnLoad = fetchMode();
 ?>
@@ -66,11 +65,7 @@ $modeOnLoad = fetchMode();
 </head>
 
 <body>
-<div id="content">
-	
-</div> <!-- content -->
-
-
+<div id="content"></div>
 
 <footer data-position="fixed">
 	<div data-role="navbar">
