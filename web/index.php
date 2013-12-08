@@ -53,7 +53,7 @@ $modeOnLoad = fetchMode();
 					$('#picker').farbtastic(function(color) {
 						$('#color').val(color);
 						// TODO: need to make text box change color too, or have some larger preview box, and then load the item with an initial
-						var jqxhr = $.ajax( "setColor.php?new="+ encodeURIComponent(color) );
+						var jqxhr = $.ajax( "controller.php?c=pickerColor&new="+ encodeURIComponent(color) );
 					});
 				}
 			});

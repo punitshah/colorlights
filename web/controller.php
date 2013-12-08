@@ -9,14 +9,24 @@ $validModes = array ("picker", "train");
 
 
 // interpret direct calls to the controller via GET
-if (array_key_exists("pickerColor", $_GET))
-	if (array_key_exists("new", $_GET))
+if (array_key_exists("c", $_GET)) {
+	$command = $_GET["c"];
+	if ($command == "pickerColor" && array_key_exists("new", $_GET))
 		saveColor(urldecode($_GET["new"]));
+	elseif ($command == "cron")
+		cron();
+}
 
 // returns true if valid mode
 function checkValidMode($mode) {
 	global $validModes;
 	return in_array($mode, $validModes);
+}
+
+// Cron task to enable repeated train information updates if needed
+function cron () {
+	if (fetchMode() == "train")
+		updateTrainData();
 }
 
 function fetchColor () {
