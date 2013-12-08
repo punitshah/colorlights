@@ -29,20 +29,25 @@ $modeOnLoad = fetchMode();
 		
 		$(document).ready(function() {
 			// load the appropriate panel
-			setPanel("<? echo $modeOnLoad; ?>");
+			changePanel("<? echo $modeOnLoad; ?>");
 			
 			// bind clicks to nav bar to re-loading panel
 			$("#pickerNav").bind("click", function(){
-				setPanel("picker");
+				changePanel("picker");
 			});
 			$("#trainNav").bind("click", function(){
-				setPanel("train");
+				changePanel("train");
 			});
 			
 		});		
 		
-		function setPanel(newMode) {
+		function changePanel (newMode) {
 			mode = newMode;
+			showLoadingOverlay();
+			setPanel(newMode);
+		}
+		
+		function setPanel(newMode) {			
 			$.ajax({
 				url: "view-mobile.php?mode=" + mode,
 				success: function(data){
@@ -51,16 +56,17 @@ $modeOnLoad = fetchMode();
 						return;
 						
 					$("#content").html(data.html);
-					
+					hideLoadingOverlay();
 					// instantiate the color picker, if applicable
 					if (mode == "picker") {
 						$("#picker").farbtastic(function(color) {
 							$("#color").val(color);
 							// TODO: need to make text box change color too, or have some larger preview box, and then load the item with an initial
-							var jqxhr = $.ajax( "controller.php?c=pickerColor&new="+ encodeURIComponent(color) );
+							var jqxhr = $.ajax( "controller.php?c=pickerColor&new="+ encodeURIComponent(color));
 						});
-						$.farbtastic("#picker").setColor("<? echo fetchColor(); ?>");
-					}
+						
+						$.farbtastic("#picker").setColor(data.color);
+					}					
 				},
 				dataType: "json",
 				
@@ -69,18 +75,30 @@ $modeOnLoad = fetchMode();
 					if(mode == "train")
 						setPanel("train");
 				},
-				timeout: 5000
+				timeout: 10000
 			});
-		}		
+		}	
+		
+		function showLoadingOverlay() {
+			$(".loadingoverlay").show();
+		}
+		
+		function hideLoadingOverlay() {
+			$(".loadingoverlay").hide();
+		}
+		
 	</script>
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=0">
 </head>
 
 <body>
+<div class="loadingoverlay"><div id="loadingicon"></div></div>
+
 <div id="content"></div>
 
 <footer data-position="fixed">
+	<div class="loadingoverlay"></div>
 	<div data-role="navbar">
     	<ul>
 			<li><a id="pickerNav" href="#" <? if($modeOnLoad == "picker") { ?> class="ui-btn-active" <? } ?> >Picker</a></li>
@@ -88,5 +106,6 @@ $modeOnLoad = fetchMode();
 		</ul>
 	</div><!-- /navbar -->
 <footer><!-- /footer -->
+
 </body>
 </html>

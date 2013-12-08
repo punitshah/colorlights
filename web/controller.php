@@ -117,7 +117,7 @@ function updateTrainData () {
 		$color = "#f52600"; //orange
 	elseif ($minstonextbus >= 0 && $minstonextbus < 2)
 		$color = "#ff0000"; //red
-	
+		
 	if ($debug)
 		echo ("Color to display: $color");
 	

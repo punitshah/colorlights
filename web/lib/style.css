@@ -2,8 +2,29 @@ body, input#color, h1, h2, h3, h4, footer, p, .ui-btn-inner{
 	font-family: 'Signika Negative', sans-serif;
 }
 
-p {
+p, input#color {
 	font-size: 115%;
+}
+
+div.loadingoverlay{
+	background-color: rgba(255, 255, 255, 0.5);
+	position:absolute;
+	top:0;
+	left:0;
+	min-width:100%;
+	min-height:100%;
+	z-index: 1000;
+}
+
+div#loadingicon {
+	background-image:url('icons/ajax-loader.gif');
+	background-repeat:no-repeat;
+	background-position:center; 
+	position:absolute;
+	top:0;
+	left:0;
+	min-width:100%;
+	min-height:100%;
 }
 
 div#content {
@@ -21,6 +42,10 @@ div#trainColor{
 	width:30px;
 	height:30px;
 	margin:auto;
+}
+
+footer {
+	z-index: 0;
 }
 
 .nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }

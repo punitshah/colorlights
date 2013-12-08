@@ -17,7 +17,7 @@ function loadPanel ($mode) {
 	elseif ($mode == "train")
 		$html = loadTrainPanel();
 		
-	echo json_encode(array("mode" => $mode, "html" => $html));
+	echo json_encode(array("mode" => $mode, "color" => fetchColor(), "html" => $html));
 }
 
 
@@ -31,7 +31,7 @@ function loadPickerPanel() {
 	
 	<form id='pickermodule' action=''>
 		<div class='form-item'>
-			<input type='text' id='color' name='color' value='#123456' />
+			<input type='text' id='color' name='color' value='". fetchColor() ."' />
 		</div>
 		<div id='picker'></div>
 	</form>
