@@ -1,6 +1,6 @@
 <?
 // Colorlight project
-// Panels for view
+// Outputs JSON for panels for view
 
 require_once("controller.php");
 
@@ -10,34 +10,33 @@ else
 	loadPanel(fetchMode());
 
 function loadPanel ($mode) {
-	//echo "{ 'mode': '". $mode ."',";
-	//echo "'html': '";
+	header('Content-type: application/json');
 	
 	if ($mode == "picker")
-		loadPickerPanel();
+		$html = loadPickerPanel();
 	elseif ($mode == "train")
-		loadTrainPanel();
+		$html = loadTrainPanel();
 		
-	//echo "'}";
+	echo json_encode(array("mode" => $mode, "html" => $html));
 }
 
 
 function loadPickerPanel() {
 	saveMode("picker");
 	
-	?>
+	return "
 	
 	<h1>Colorlights</h1>
 	<h2>Picker</h2>
 	
-	<form id="pickermodule" action="">
-		<div class="form-item">
-			<input type="text" id="color" name="color" value="#123456" />
+	<form id='pickermodule' action=''>
+		<div class='form-item'>
+			<input type='text' id='color' name='color' value='#123456' />
 		</div>
-		<div id="picker"></div>
+		<div id='picker'></div>
 	</form>
 	
-	<?
+	";
 	
 }
 
@@ -46,14 +45,15 @@ function loadTrainPanel() {
 	saveMode("train");
 	
 	$traindata = updateTrainData();
-	?>
+	
+	return "
 
 	<h1>Colorlights</h1>
 	<h2>Next J</h2>
-	<div id="trainColor" style="background-color:<? echo $traindata["color"]; ?>"></div>
-	<p>Next train: <? echo $traindata["mins"]; ?> mins</p>
+	<div id='trainColor' style='background-color:{$traindata['color']}'></div>
+	<p>Next train: {$traindata['mins']} mins</p>
 	
-	<?
+	";
 }
 
 ?>

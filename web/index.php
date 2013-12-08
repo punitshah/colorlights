@@ -43,11 +43,14 @@ $modeOnLoad = fetchMode();
 		
 		function setPanel(newMode) {
 			mode = newMode;
-			//alert ("setPanel called with mode of: " + mode);			
 			$.ajax({
 				url: "view-mobile.php?mode=" + mode,
 				success: function(data){
-					$("#content").html(data);
+					// check we don't have overlapping AJAX requests out due to a change in mode btwn requests
+					if (data.mode != mode)
+						return;
+						
+					$("#content").html(data.html);
 					
 					// instantiate the color picker, if applicable
 					if (mode == "picker") {
@@ -59,7 +62,7 @@ $modeOnLoad = fetchMode();
 						$.farbtastic("#picker").setColor("<? echo fetchColor(); ?>");
 					}
 				},
-				dataType: "html",
+				dataType: "json",
 				
 				// set complete and timeout if set to train mode, where refreshing is needed
 				complete: function(){
