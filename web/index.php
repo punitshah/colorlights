@@ -24,6 +24,8 @@ $modeOnLoad = fetchMode();
 	
 	<link href='http://fonts.googleapis.com/css?family=Signika+Negative' rel='stylesheet' type='text/css'>
 	
+	<script src="lib/ga.js"></script>
+	
 	<script type="text/javascript" charset="utf-8">
 		var mode = "<? echo $modeOnLoad; ?>";
 		

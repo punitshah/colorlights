@@ -46,12 +46,17 @@ function loadTrainPanel() {
 	
 	$traindata = updateTrainData();
 	
+	if ($traindata['mins'] == -1)
+		$traindata['mins'] = "none 'till the morning";
+	else
+		$traindata['mins'] = $traindata['mins'] . " mins";
+	
 	return "
 
 	<h1>Colorlights</h1>
 	<h2>Next J</h2>
 	<div id='trainColor' style='background-color:{$traindata['color']}'></div>
-	<p>Next train: {$traindata['mins']} mins</p>
+	<p>Next train: {$traindata['mins']}</p>
 	
 	";
 }
