@@ -1,7 +1,7 @@
 colorlights
 ===========
 
-A light controllable from the web based on user inputs or external data
+A breathing light controllable from the web based on user inputs or external data
 
 To use:
 - Install web files on web server
