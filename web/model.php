@@ -16,7 +16,6 @@ function doSaveColor ($color) {
 	$handle = fopen("datastore/color.txt", "w");
 	fwrite ($handle, $color);
 	fclose($handle);
-
 }
 
 // sets mode file in datastore based on inputted mode from $validModes
@@ -25,13 +24,7 @@ function doSaveMode ($mode) {
 	$handle = fopen("datastore/mode.txt", "w");
 	fwrite ($handle, $mode);
 	fclose($handle);
-
 }
-
-
-
-
-
 
 
 ?>

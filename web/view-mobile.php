@@ -9,7 +9,6 @@ if (array_key_exists("mode", $_GET) && checkValidMode($_GET["mode"]) )
 else
 	loadPanel(fetchMode());
 
-
 function loadPanel ($mode) {
 	if ($mode == "picker")
 		loadPickerPanel();
@@ -19,6 +18,8 @@ function loadPanel ($mode) {
 
 
 function loadPickerPanel() {
+	saveMode("picker");
+	
 	?>
 	
 	<h1>Colorlight</h1>
@@ -37,19 +38,18 @@ function loadPickerPanel() {
 
 
 function loadTrainPanel() {
+	saveMode("train");
+	
 	$traindata = updateTrainData();
 	?>
 
 	<h1>Colorlight</h1>
 	<h2>Next J</h2>
-	
-	Next train: <? echo $traindata["mins"]; ?> <br><br>
-	<div id="trainColor" style="color:<? echo $traindata["color"]; ?>"></div>
+	<div id="trainColor" style="background-color:<? echo $traindata["color"]; ?>"></div>
+	<p>Next train: <? echo $traindata["mins"]; ?> mins</p>
 	
 	<?
 }
-
-
 
 
 ?>

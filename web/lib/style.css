@@ -1,5 +1,9 @@
-body, input#color, h1, h2, h3, h4{
+body, input#color, h1, h2, h3, h4, footer, p, .ui-btn-inner{
 	font-family: 'Signika Negative', sans-serif;
+}
+
+p {
+	font-size: 115%;
 }
 
 div#content {
@@ -14,8 +18,9 @@ form#pickermodule{
 }
 
 div#trainColor{
-	width:100%;
-	height:100px;
+	width:30px;
+	height:30px;
+	margin:auto;
 }
 
 .nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }

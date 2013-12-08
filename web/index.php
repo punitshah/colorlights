@@ -27,16 +27,23 @@ $modeOnLoad = fetchMode();
 	
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
-			//alert ("test");
 			// load the appropriate panel
-			setPanel(<? echo $modeOnLoad; ?>);
-			//alert ("after setPanel called with mode of: " + mode);
+			setPanel("<? echo $modeOnLoad; ?>");
+			
+			// bind clicks to nav bar to re-loading panel
+			$("#pickerNav").bind("click", function(){
+				setPanel("picker");
+			});
+			$("#trainNav").bind("click", function(){
+				setPanel("train");
+			});
+			
 		});
 		
 		
 		function setPanel(mode) {
-			alert ("setPanel called ");//with mode of: " + mode);
-			/*$.ajax({
+			//alert ("setPanel called with mode of: " + mode);
+			$.ajax({
 				url: "view-mobile.php?mode=" + mode
 			}).done(function(data){
 				$("#content").html(data);
@@ -49,12 +56,9 @@ $modeOnLoad = fetchMode();
 						var jqxhr = $.ajax( "setColor.php?new="+ encodeURIComponent(color) );
 					});
 				}
-			}).fail(
-				alert("fail");
-			);
-			
-			*/
+			});
 		}
+		
 		
 	</script>
 	
@@ -64,29 +68,6 @@ $modeOnLoad = fetchMode();
 <body>
 <div id="content">
 	
-	
-	
-	
-	
-	<!--<div id="pickerPanel"<? if ($modeOnLoad != "picker") {?> style="visibility:hidden;" <? } ?> >
-		<h1>Colorlight</h1>
-		<h2>Picker</h2>
-	
-		<form id="pickermodule" action="">
-			<div class="form-item">
-				<input type="text" id="color" name="color" value="#123456" />
-			</div>
-			<div id="picker"></div>
-		</form>
-	</div>
-	<div id="trainPanel" <? if ($modeOnLoad != "train") echo 'style="visibility:hidden;"';?>>
-		<?php $traindata = updateTrainData(); ?>
-		<h1>Colorlight</h1>
-		<h2>Next J</h2>
-		
-		Next train: <? $traindata["mins"] ?> <br><br>
-		<div id="trainColor" style="color:<? $traindata["color"] ?>"></div>
-	</div>-->
 </div> <!-- content -->
 
 
@@ -94,8 +75,8 @@ $modeOnLoad = fetchMode();
 <footer data-position="fixed">
 	<div data-role="navbar">
     	<ul>
-			<li><a onClick="setMode.php?new=picker" href="#" <? if($modeOnLoad == "picker") { ?> class="ui-btn-active" <? } ?> >Picker</a></li>
-			<li><a href="#" <? if($modeOnLoad == "train") { ?> class="ui-btn-active" <? } ?> >J Train</a></li>
+			<li><a id="pickerNav" href="#" <? if($modeOnLoad == "picker") { ?> class="ui-btn-active" <? } ?> >Picker</a></li>
+			<li><a id="trainNav"  href="#" <? if($modeOnLoad == "train") { ?> class="ui-btn-active" <? } ?> >Next J</a></li>
 		</ul>
 	</div><!-- /navbar -->
 <footer><!-- /footer -->
