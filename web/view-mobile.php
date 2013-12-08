@@ -10,10 +10,15 @@ else
 	loadPanel(fetchMode());
 
 function loadPanel ($mode) {
+	//echo "{ 'mode': '". $mode ."',";
+	//echo "'html': '";
+	
 	if ($mode == "picker")
 		loadPickerPanel();
 	elseif ($mode == "train")
 		loadTrainPanel();
+		
+	//echo "'}";
 }
 
 
@@ -22,7 +27,7 @@ function loadPickerPanel() {
 	
 	?>
 	
-	<h1>Colorlight</h1>
+	<h1>Colorlights</h1>
 	<h2>Picker</h2>
 	
 	<form id="pickermodule" action="">
@@ -43,13 +48,12 @@ function loadTrainPanel() {
 	$traindata = updateTrainData();
 	?>
 
-	<h1>Colorlight</h1>
+	<h1>Colorlights</h1>
 	<h2>Next J</h2>
 	<div id="trainColor" style="background-color:<? echo $traindata["color"]; ?>"></div>
 	<p>Next train: <? echo $traindata["mins"]; ?> mins</p>
 	
 	<?
 }
-
 
 ?>

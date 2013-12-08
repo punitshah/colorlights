@@ -25,6 +25,8 @@ $modeOnLoad = fetchMode();
 	<link href='http://fonts.googleapis.com/css?family=Signika+Negative' rel='stylesheet' type='text/css'>
 	
 	<script type="text/javascript" charset="utf-8">
+		var mode = "<? echo $modeOnLoad; ?>";
+		
 		$(document).ready(function() {
 			// load the appropriate panel
 			setPanel("<? echo $modeOnLoad; ?>");
@@ -37,28 +39,36 @@ $modeOnLoad = fetchMode();
 				setPanel("train");
 			});
 			
-		});
+		});		
 		
-		
-		function setPanel(mode) {
-			//alert ("setPanel called with mode of: " + mode);
+		function setPanel(newMode) {
+			mode = newMode;
+			//alert ("setPanel called with mode of: " + mode);			
 			$.ajax({
-				url: "view-mobile.php?mode=" + mode
-			}).done(function(data){
-				$("#content").html(data);
+				url: "view-mobile.php?mode=" + mode,
+				success: function(data){
+					$("#content").html(data);
+					
+					// instantiate the color picker, if applicable
+					if (mode == "picker") {
+						$("#picker").farbtastic(function(color) {
+							$("#color").val(color);
+							// TODO: need to make text box change color too, or have some larger preview box, and then load the item with an initial
+							var jqxhr = $.ajax( "controller.php?c=pickerColor&new="+ encodeURIComponent(color) );
+						});
+						$.farbtastic("#picker").setColor("<? echo fetchColor(); ?>");
+					}
+				},
+				dataType: "html",
 				
-				// instantiate the color picker, if applicable
-				if (mode == "picker") {
-					$('#picker').farbtastic(function(color) {
-						$('#color').val(color);
-						// TODO: need to make text box change color too, or have some larger preview box, and then load the item with an initial
-						var jqxhr = $.ajax( "controller.php?c=pickerColor&new="+ encodeURIComponent(color) );
-					});
-				}
+				// set complete and timeout if set to train mode, where refreshing is needed
+				complete: function(){
+					if(mode == "train")
+						setPanel("train");
+				},
+				timeout: 5000
 			});
-		}
-		
-		
+		}		
 	</script>
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=0">

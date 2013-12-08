@@ -45,9 +45,9 @@ void setup() {
 
   // set initial colors to black so we fade the light on
   updateColor();
-  oldred   = 0;
-  oldgreen = 0;
-  oldblue  = 0;
+  oldred   = red;
+  oldgreen = green;
+  oldblue  = blue;
   
 }
 
