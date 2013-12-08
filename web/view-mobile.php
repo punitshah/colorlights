@@ -28,7 +28,7 @@ function loadPickerPanel() {
 	
 	<h1>Colorlights</h1>
 	<h2>Picker</h2>
-	
+
 	<form id='pickermodule' action=''>
 		<div class='form-item'>
 			<input type='text' id='color' name='color' value='". fetchColor() ."' />

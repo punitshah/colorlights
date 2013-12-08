@@ -45,9 +45,9 @@ void setup() {
 
   // set initial colors to black so we fade the light on
   updateColor();
-  oldred   = red;
-  oldgreen = green;
-  oldblue  = blue;
+  oldred   = 0;
+  oldgreen = 0;
+  oldblue  = 0;
   
 }
 
@@ -69,9 +69,6 @@ void loop(){
   // increment
   cycle++;
 }
-
-
-
 
 //----------------------------------------------------------------------------------------
 
@@ -197,8 +194,6 @@ void setLights() {
   int greentouse = avggreen * intensity;
   int bluetouse  = avgblue  * intensity; 
   
-  
-  
   analogWrite(PIN_RED, redtouse);
   analogWrite(PIN_GREEN, greentouse);
   analogWrite(PIN_BLUE, bluetouse);
@@ -208,7 +203,6 @@ void setLights() {
 double getIntensity() {
   return BREATH_DEPTH_MIN + (1-BREATH_DEPTH_MIN) * (cos(PI + PI*2*cycle/BREATH_LEN)+1)/2;
 }
-
 
 
 // converts two digit hex into integer
