@@ -44,6 +44,11 @@ $modeOnLoad = fetchMode();
 			$("#earthquakeNav").bind("click", function(){
 				changePanel("earthquake");
 			});
+
+			$("#sp500volNav").bind("click", function(){
+				changePanel("sp500vol");
+			});			
+			
 		});		
 		
 		function changePanel (newMode) {
@@ -83,6 +88,8 @@ $modeOnLoad = fetchMode();
 						setPanel("train");
 					if(mode == "earthquake")
 						setPanel("earthquake");
+					if(mode== "sp500vol")
+						setPanel("sp500vol");
 				},
 				timeout: 50000
 			});
@@ -113,6 +120,8 @@ $modeOnLoad = fetchMode();
 			<li><a id="pickerNav" 		href="#" <? if($modeOnLoad == "picker") 	{ ?> class="ui-btn-active" <? } ?> >Picker</a></li>
 			<li><a id="trainNav"  		href="#" <? if($modeOnLoad == "train") 		{ ?> class="ui-btn-active" <? } ?> >Next J</a></li>
 			<li><a id="earthquakeNav"  	href="#" <? if($modeOnLoad == "earthquake") { ?> class="ui-btn-active" <? } ?> >Earthquake</a></li>
+			<li><a id="sp500volNav"  	href="#" <? if($modeOnLoad == "sp500vol") 	{ ?> class="ui-btn-active" <? } ?> >S&amp;P 500 Volume</a></li>
+
 		</ul>
 	</div><!-- /navbar -->
 <footer><!-- /footer -->

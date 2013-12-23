@@ -18,7 +18,10 @@ function loadPanel ($mode) {
 		$html = loadTrainPanel();
 	elseif ($mode == "earthquake")
 		$html = loadEarthquake();
+	elseif ($mode == "sp500vol")
+		$html = loadSP500VolPanel();
 		
+	// todo: optimize functions to return color data directly
 	echo json_encode(array("mode" => $mode, "color" => fetchColor(), "html" => $html));
 }
 
@@ -32,7 +35,7 @@ function loadEarthquake() {
 	
 	<h1>Colorlights</h1>
 	<h2>Earthquakes</h2>
-	<div id='trainColor' style='background-color:{$eqdata['color']}'></div>
+	<div id='colorPreview' style='background-color:{$eqdata['color']}'></div>
 	<p>Magnitude for largest earthquake within 100mi of Church and Market in past 24 hours: {$eqdata['magnitude']}</p>
 	
 	";
@@ -59,6 +62,22 @@ function loadPickerPanel() {
 }
 
 
+function loadSP500VolPanel() {
+	saveMode("sp500vol");
+	
+	$voldata = updateSP500VolData();
+	
+	return "
+	
+	<h1>Colorlights</h1>
+	<h2>S&amp;P500 Volume</h2>
+	<div id='colorPreview' style='background-color:{$voldata['color']}'></div>
+	<p>Volume in last trading day (?): ".number_format($voldata['volume'])."</p>
+	
+	";
+}
+
+
 function loadTrainPanel() {
 	saveMode("train");
 	
@@ -73,7 +92,7 @@ function loadTrainPanel() {
 
 	<h1>Colorlights</h1>
 	<h2>Next J</h2>
-	<div id='trainColor' style='background-color:{$traindata['color']}'></div>
+	<div id='colorPreview' style='background-color:{$traindata['color']}'></div>
 	<p>Next train: {$traindata['mins']}</p>
 	
 	";

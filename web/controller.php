@@ -5,7 +5,7 @@
 require_once("model.php");
 
 $debug = 0;
-$validModes = array ("picker", "train", "earthquake");
+$validModes = array ("picker", "train", "earthquake", "sp500vol");
 
 
 // interpret direct calls to the controller via GET
@@ -29,6 +29,8 @@ function cron () {
 		$data = updateTrainData();
 	if (fetchMode() == "earthquake")
 		$data = updateEarthquakeData();
+	if (fetchMode() == "sp500vol")
+		$data = updateSP500VolData();
 	
 	saveColor($data["color"]);
 }
@@ -40,6 +42,51 @@ function fetchColor () {
 function fetchMode () {
 	return doFetchMode();
 }
+
+// Creates color from blue to green to red based on inputed value in range
+// Input: Floor value, ceiling value, and original value itself
+// Output: hex value color in format #xxxxxx
+function scaleToColor($floor, $ceiling, $unscaledValue) {
+	// convert value to be from 0 to 1 on where in range it is
+	if ($unscaledValue <= $floor)
+		$value = 0;
+	elseif($unscaledValue >= $ceiling)
+		$value = 1;
+	else
+		$value = ($unscaledValue-$floor)/($ceiling - $floor);
+	
+	// find values of R, G, and B based on value
+	if ($value > .5)
+		$red = dechex(($value-.5)*255/.5);
+	else
+		$red = 0;
+	
+	if ($value < .5)
+		$green = dechex(($value)*255/.5);
+	else
+		$green = dechex((1-$value)*255/.5);
+	
+	if ($value < .5)
+		$blue = dechex((.5-$value)*255/.5);
+	else
+		$blue = 0;
+	
+	//echo $value."|".$red."|".$green."|".$blue;
+	
+	// convert each color to two-digit hex
+	if (strlen($red) == 1)
+		$red = "0" . $red;
+	if (strlen($green) == 1)
+		$green = "0" . $green;
+	if (strlen($blue) == 1)
+		$blue = "0" . $blue;
+	
+	//echo "\n".$value."|".$red."|".$green."|".$blue;
+	
+	// return properly formatted color string
+	return "#".$red.$green.$blue;	
+}
+
 
 // sets color file in datastore based on color input in format "#000000"
 function saveColor ($color) {
@@ -76,70 +123,58 @@ function saveMode ($mode) {
 	return doSaveMode($mode);
 }
 
-// Get earthquake data for earthquakes close to Market & Church St. in SF
+// Get earthquake data for recent earthquakes close to Market & Church St. in SF
 // input: none
 // output: array with info on largest close recent earthquake, color
 function updateEarthquakeData() {
 	global $debug;
 	$debugStr = "";
 	
+	// get data for last day's earthquakes 100 miles (i.e. 160km) from Church and Market in SF
 	$timeWindow = date(DATE_ISO8601, time()-60*60*24);
-	
 	$xml = file_get_contents("http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime=".$timeWindow."&latitude=37.7675&longitude=-122.4289&maxradiuskm=161&orderby=magnitude&limit=1");
 	
-	// TODO: refine this block to handle no earthquakes more gracefully	
 	if ($xml == FALSE){
 		// no XML returned - likely bc no earthquakes in area
 		if ($debug)
 			echo("Error - no XML returned");
 		$color = "#ffffff";
-		echo $color;
-		return;
+		return array("color" => $color, "magnitude" => "error connecting to data");
 	}
 	
 	// get earthquake
 	$eqEvent = new SimpleXMLElement($xml);
 	$magnitude = floatval($eqEvent -> eventParameters -> event[0] -> magnitude -> mag -> value);
 
-	// scale magnitude btwn green for <= 1 and red for >=4
-	if ($magnitude <= 1)
-		$colorScale = 0;
-	elseif($magnitude >= 4)
-		$colorScale = 1;
-	else {	
-		$colorScale = ($magnitude-1)/3;
-	}
-	
-	// $debugStr .= "colorscale= ". $colorScale." magnitude = ". $magnitude;
-	
-	// get scaled colors to hex
-	if ($colorScale > .5)
-		$red = dechex(($colorScale-.5)*256/.5);
-	else
-		$red = 0;
-	
-	if ($colorScale < .5)
-		$green = dechex(($colorScale)*256/.5);
-	else
-		$green = dechex((1-$colorScale)*256/.5);
-	
-	if ($colorScale < .5)
-		$blue = dechex((.5-$colorScale)*256/.5);
-	else
-		$blue = 0;
-	
-	// convert to hex
-	if (strlen($red) == 1)
-		$red = "0" . $red;
-	if (strlen($green) == 1)
-		$green = "0" . $green;
-	if (strlen($blue) == 1)
-		$blue = "0" . $blue;
-	
-	$color = "#".$red.$green.$blue;
+	$color = scaleToColor(1, 4, $magnitude);
 		
 	return array("color" => $color, "magnitude" => $magnitude, "debug" => $debugStr);
 }
+
+// Get S&P500 Volume data and convert to color
+// input: none
+// output: array with volume data, color
+function updateSP500VolData () {
+	global $debug;
+	
+	$xml = file_get_contents("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quote%20where%20symbol%20in%20(%22%5EGSPC%22)&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys");
+	
+	if ($xml == FALSE){
+		// no XML returned
+		if ($debug)
+			echo("Error - no XML returned");
+		$color = "#ffffff";
+		return array("color" => $color, "volume" => "error connecting to data");
+	}
+	
+	// get volume and scale to color
+	$stockData = new SimpleXMLElement($xml);
+	$volume = $stockData -> results -> quote[0] -> Volume;
+	$color = scaleToColor(1.5e9, 5.5e9, $volume);
+	
+	return array("color" => $color, "volume" => $volume);
+}
+
 
 // Get next J train time, convert to color, and then call saver
 // input: none
@@ -153,8 +188,7 @@ function updateTrainData () {
 		if ($debug)
 			echo("Error - no XML returned");
 		$color = "#ffffff";
-		echo $color;
-		return;
+		return array("color" => $color, "mins" => "error connecting to data");
 	}
 
 	// get prediction
