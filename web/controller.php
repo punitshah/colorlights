@@ -27,6 +27,8 @@ function checkValidMode($mode) {
 function cron () {
 	if (fetchMode() == "train")
 		updateTrainData();
+	if (fetchMode() == "earthquake")
+		updateEarthquakeData();
 }
 
 function fetchColor () {
@@ -124,9 +126,7 @@ function updateEarthquakeData() {
 	else
 		$blue = 0;
 	
-	
-	//$red = dechex($colorScale*256);
-	//$green = dechex((1-$colorScale)*256);
+	// convert to hex
 	if (strlen($red) == 1)
 		$red = "0" . $red;
 	if (strlen($green) == 1)
@@ -139,7 +139,6 @@ function updateEarthquakeData() {
 	saveColor($color);
 	
 	return array("color" => $color, "magnitude" => $magnitude, "debug" => $debugStr);
-		
 }
 
 // Get next J train time, convert to color, and then call saver
