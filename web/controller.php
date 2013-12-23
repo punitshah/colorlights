@@ -5,7 +5,7 @@
 require_once("model.php");
 
 $debug = 0;
-$validModes = array ("picker", "train");
+$validModes = array ("picker", "train", "earthquake");
 
 
 // interpret direct calls to the controller via GET
@@ -72,6 +72,75 @@ function saveMode ($mode) {
 	return doSaveMode($mode);
 }
 
+// Get earthquake data for earthquakes close to Market & Church St. in SF
+// input: none
+// output: array with info on largest close recent earthquake, color
+function updateEarthquakeData() {
+	global $debug;
+	$debugStr = "";
+	
+	$timeWindow = date(DATE_ISO8601, time()-60*60*24);
+	
+	$xml = file_get_contents("http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime=".$timeWindow."&latitude=37.7675&longitude=-122.4289&maxradiuskm=161&orderby=magnitude&limit=1");
+	
+	// TODO: refine this block to handle no earthquakes more gracefully	
+	if ($xml == FALSE){
+		// no XML returned - likely bc no earthquakes in area
+		if ($debug)
+			echo("Error - no XML returned");
+		$color = "#ffffff";
+		echo $color;
+		return;
+	}
+	
+	// get earthquake
+	$eqEvent = new SimpleXMLElement($xml);
+	$magnitude = floatval($eqEvent -> eventParameters -> event[0] -> magnitude -> mag -> value);
+
+	// scale magnitude btwn green for <= 1 and red for >=4
+	if ($magnitude <= 1)
+		$colorScale = 0;
+	elseif($magnitude >= 4)
+		$colorScale = 1;
+	else {	
+		$colorScale = ($magnitude-1)/3;
+	}
+	
+	// $debugStr .= "colorscale= ". $colorScale." magnitude = ". $magnitude;
+	
+	// get scaled colors to hex
+	if ($colorScale > .5)
+		$red = dechex(($colorScale-.5)*256/.5);
+	else
+		$red = 0;
+	
+	if ($colorScale < .5)
+		$green = dechex(($colorScale)*256/.5);
+	else
+		$green = dechex((1-$colorScale)*256/.5);
+	
+	if ($colorScale < .5)
+		$blue = dechex((.5-$colorScale)*256/.5);
+	else
+		$blue = 0;
+	
+	
+	//$red = dechex($colorScale*256);
+	//$green = dechex((1-$colorScale)*256);
+	if (strlen($red) == 1)
+		$red = "0" . $red;
+	if (strlen($green) == 1)
+		$green = "0" . $green;
+	if (strlen($blue) == 1)
+		$blue = "0" . $blue;
+	
+	$color = "#".$red.$green.$blue;
+	
+	saveColor($color);
+	
+	return array("color" => $color, "magnitude" => $magnitude, "debug" => $debugStr);
+		
+}
 
 // Get next J train time, convert to color, and then call saver
 // input: none

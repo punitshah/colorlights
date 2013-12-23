@@ -41,6 +41,9 @@ $modeOnLoad = fetchMode();
 				changePanel("train");
 			});
 			
+			$("#earthquakeNav").bind("click", function(){
+				changePanel("earthquake");
+			});
 		});		
 		
 		function changePanel (newMode) {
@@ -59,8 +62,10 @@ $modeOnLoad = fetchMode();
 						
 					$("#content").html(data.html);
 					hideLoadingOverlay();
-					// instantiate the color picker, if applicable
+					
+					// instantiate panel-specific components
 					if (mode == "picker") {
+						// instantiate color picker
 						$("#picker").farbtastic(function(color) {
 							$("#color").val(color);
 							// TODO: need to make text box change color too, or have some larger preview box, and then load the item with an initial
@@ -72,7 +77,7 @@ $modeOnLoad = fetchMode();
 				},
 				dataType: "json",
 				
-				// set complete and timeout if set to train mode, where refreshing is needed
+				// set complete and timeout if set to train, where refreshing is needed
 				complete: function(){
 					if(mode == "train")
 						setPanel("train");
@@ -103,8 +108,9 @@ $modeOnLoad = fetchMode();
 	<div class="loadingoverlay"></div>
 	<div data-role="navbar">
     	<ul>
-			<li><a id="pickerNav" href="#" <? if($modeOnLoad == "picker") { ?> class="ui-btn-active" <? } ?> >Picker</a></li>
-			<li><a id="trainNav"  href="#" <? if($modeOnLoad == "train") { ?> class="ui-btn-active" <? } ?> >Next J</a></li>
+			<li><a id="pickerNav" 		href="#" <? if($modeOnLoad == "picker") 	{ ?> class="ui-btn-active" <? } ?> >Picker</a></li>
+			<li><a id="trainNav"  		href="#" <? if($modeOnLoad == "train") 		{ ?> class="ui-btn-active" <? } ?> >Next J</a></li>
+			<li><a id="earthquakeNav"  	href="#" <? if($modeOnLoad == "earthquake") { ?> class="ui-btn-active" <? } ?> >Earthquake</a></li>
 		</ul>
 	</div><!-- /navbar -->
 <footer><!-- /footer -->

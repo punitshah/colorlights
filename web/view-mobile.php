@@ -16,8 +16,27 @@ function loadPanel ($mode) {
 		$html = loadPickerPanel();
 	elseif ($mode == "train")
 		$html = loadTrainPanel();
+	elseif ($mode == "earthquake")
+		$html = loadEarthquake();
 		
 	echo json_encode(array("mode" => $mode, "color" => fetchColor(), "html" => $html));
+}
+
+
+function loadEarthquake() {
+	saveMode("earthquake");
+	
+	$eqdata = updateEarthquakeData();
+	return "
+	
+	<h1>Colorlights</h1>
+	<h2>Earthquakes</h2>
+	<div id='trainColor' style='background-color:{$eqdata['color']}'></div>
+	<p>Magnitude for largest earthquake within 100mi of Church and Market in past 24 hours: {$eqdata['magnitude']}</p>
+	
+	";
+	
+	//"Still building this interface<br><br> color for next eq is ". $eqdata["color"] ." with mag ". $eqdata["magnitude"]." and deug str of: ". $eqdata["debug"];
 }
 
 
@@ -60,5 +79,6 @@ function loadTrainPanel() {
 	
 	";
 }
+
 
 ?>
