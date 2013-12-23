@@ -26,9 +26,11 @@ function checkValidMode($mode) {
 // Cron task to enable repeated train information updates if needed
 function cron () {
 	if (fetchMode() == "train")
-		updateTrainData();
+		$data = updateTrainData();
 	if (fetchMode() == "earthquake")
-		updateEarthquakeData();
+		$data = updateEarthquakeData();
+	
+	saveColor($data["color"]);
 }
 
 function fetchColor () {
@@ -135,9 +137,7 @@ function updateEarthquakeData() {
 		$blue = "0" . $blue;
 	
 	$color = "#".$red.$green.$blue;
-	
-	saveColor($color);
-	
+		
 	return array("color" => $color, "magnitude" => $magnitude, "debug" => $debugStr);
 }
 
@@ -188,9 +188,7 @@ function updateTrainData () {
 		
 	if ($debug)
 		echo ("Color to display: $color");
-	
-	saveColor($color);
-	
+		
 	return array("color" => $color, "mins" => $minstonextbus);
 }
 
