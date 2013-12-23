@@ -52,6 +52,7 @@ $modeOnLoad = fetchMode();
 		});		
 		
 		function changePanel (newMode) {
+			// todo: run some cron task so we save the state from the previous run if we're moving to picker
 			mode = newMode;
 			showLoadingOverlay();
 			setPanel(newMode);
@@ -110,20 +111,7 @@ $modeOnLoad = fetchMode();
 
 <body>
 <div class="loadingoverlay"><div id="loadingicon"></div></div>
-<div data-role="header" data-position="fixed">
-	<h1>Colorlights</h1>
-	<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
-	<a href="#add-form" data-icon="gear" data-iconpos="notext" data-position="right">Add</a>
-</div><!-- /header -->
-<div data-role="panel" data-position-fixed="true" data-display="push" id="nav-panel">
-    <ul data-role="listview">
-            <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
-			<li><a href="#panel-fixed-page2">Accordion</a></li>
-			<li><a href="#panel-fixed-page2">AJAX Navigation</a></li>
-			<li><a href="#panel-fixed-page2">Autocomplete</a></li>
-			<li><a href="#panel-fixed-page2">Buttons</a></li>
-        </ul>
-</div><!-- /panel -->
+
 <div id="content"></div>
 
 <footer data-position="fixed">
