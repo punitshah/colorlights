@@ -22,7 +22,8 @@ function loadPanel ($mode) {
 		$html = loadSP500VolPanel();
 		
 	// todo: optimize functions to return color data directly
-	echo json_encode(array("mode" => $mode, "color" => fetchColor(), "html" => $html));
+	echo json_encode(array("mode" => $mode, "html" => $html));
+	//echo json_encode(array("mode" => $mode, "color" => fetchColor(), "html" => $html));
 }
 
 
@@ -36,7 +37,7 @@ function loadEarthquake() {
 	<h1>Colorlights</h1>
 	<h2>Earthquakes</h2>
 	<div id='colorPreview' style='background-color:{$eqdata['color']}'></div>
-	<p>Magnitude for largest earthquake within 100mi of Church and Market in past 24 hours: {$eqdata['magnitude']}</p>
+	<p>Magnitude for largest recent nearby earthquake: {$eqdata['magnitude']}</p>
 	
 	";
 }

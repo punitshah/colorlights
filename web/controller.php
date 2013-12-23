@@ -31,7 +31,7 @@ function cron () {
 		$data = updateEarthquakeData();
 	if (fetchMode() == "sp500vol")
 		$data = updateSP500VolData();
-	
+		
 	saveColor($data["color"]);
 }
 
@@ -70,9 +70,7 @@ function scaleToColor($floor, $ceiling, $unscaledValue) {
 		$blue = dechex((.5-$value)*255/.5);
 	else
 		$blue = 0;
-	
-	//echo $value."|".$red."|".$green."|".$blue;
-	
+		
 	// convert each color to two-digit hex
 	if (strlen($red) == 1)
 		$red = "0" . $red;
@@ -80,9 +78,7 @@ function scaleToColor($floor, $ceiling, $unscaledValue) {
 		$green = "0" . $green;
 	if (strlen($blue) == 1)
 		$blue = "0" . $blue;
-	
-	//echo "\n".$value."|".$red."|".$green."|".$blue;
-	
+		
 	// return properly formatted color string
 	return "#".$red.$green.$blue;	
 }
@@ -159,6 +155,7 @@ function updateSP500VolData () {
 	
 	$xml = file_get_contents("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quote%20where%20symbol%20in%20(%22%5EGSPC%22)&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys");
 	
+	// todo: turn this into an error catching thing or deal with warning that is thrown when no XML returned
 	if ($xml == FALSE){
 		// no XML returned
 		if ($debug)
