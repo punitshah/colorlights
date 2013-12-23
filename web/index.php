@@ -81,8 +81,10 @@ $modeOnLoad = fetchMode();
 				complete: function(){
 					if(mode == "train")
 						setPanel("train");
+					if(mode == "earthquake")
+						setPanel("earthquake");
 				},
-				timeout: 10000
+				timeout: 50000
 			});
 		}	
 		
