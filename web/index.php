@@ -110,17 +110,30 @@ $modeOnLoad = fetchMode();
 
 <body>
 <div class="loadingoverlay"><div id="loadingicon"></div></div>
-
+<div data-role="header" data-position="fixed">
+	<h1>Colorlights</h1>
+	<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+	<a href="#add-form" data-icon="gear" data-iconpos="notext" data-position="right">Add</a>
+</div><!-- /header -->
+<div data-role="panel" data-position-fixed="true" data-display="push" id="nav-panel">
+    <ul data-role="listview">
+            <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
+			<li><a href="#panel-fixed-page2">Accordion</a></li>
+			<li><a href="#panel-fixed-page2">AJAX Navigation</a></li>
+			<li><a href="#panel-fixed-page2">Autocomplete</a></li>
+			<li><a href="#panel-fixed-page2">Buttons</a></li>
+        </ul>
+</div><!-- /panel -->
 <div id="content"></div>
 
 <footer data-position="fixed">
 	<div class="loadingoverlay"></div>
 	<div data-role="navbar">
     	<ul>
-			<li><a id="pickerNav" 		href="#" <? if($modeOnLoad == "picker") 	{ ?> class="ui-btn-active" <? } ?> >Picker</a></li>
-			<li><a id="trainNav"  		href="#" <? if($modeOnLoad == "train") 		{ ?> class="ui-btn-active" <? } ?> >Next J</a></li>
-			<li><a id="earthquakeNav"  	href="#" <? if($modeOnLoad == "earthquake") { ?> class="ui-btn-active" <? } ?> >Earthquake</a></li>
-			<li><a id="sp500volNav"  	href="#" <? if($modeOnLoad == "sp500vol") 	{ ?> class="ui-btn-active" <? } ?> >S&amp;P 500 Volume</a></li>
+			<li><a id="pickerNav" 		href="#" <? if($modeOnLoad == "picker") 	{ ?> class="ui-btn-active" <? } ?> >Picker<br>&nbsp;</a></li>
+			<li><a id="trainNav"  		href="#" <? if($modeOnLoad == "train") 		{ ?> class="ui-btn-active" <? } ?> >Next J<br>&nbsp;</a></li>
+			<li><a id="earthquakeNav"  	href="#" <? if($modeOnLoad == "earthquake") { ?> class="ui-btn-active" <? } ?> >Earth-<br>quake</a></li>
+			<li><a id="sp500volNav"  	href="#" <? if($modeOnLoad == "sp500vol") 	{ ?> class="ui-btn-active" <? } ?> >S&amp;P 500<br>Volume</a></li>
 
 		</ul>
 	</div><!-- /navbar -->
